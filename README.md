@@ -1,13 +1,16 @@
 # MarkView Pro
 
-一个功能强大的 Markdown 编辑器，支持实时预览、主题切换、PDF 导出等功能。
+一个功能强大且完全免费的 Markdown 编辑器，支持实时预览、主题切换、PDF 导出、LaTeX 公式编辑等功能。
+
+🌐 **在线访问：** [https://markview-pro.pages.dev/](https://markview-pro.pages.dev/)
 
 ## 功能特性
 
-- ✨ **实时预览** - 支持编辑器和预览分屏显示
+- ⏰ **实时预览** - 支持编辑器和预览分屏显示
 - 🎨 **主题切换** - 支持亮色/暗色主题
-- 📄 **PDF 导出** - 支持导出为 PDF 格式
-- 📝 **Markdown 导出** - 支持导出为 Markdown 文件
+- 📕 **PDF 导出** - 支持导出为 PDF 格式
+- 📄 **Markdown 导出** - 支持导出为 Markdown 文件
+- 📝 **公式编辑** - 支持 LaTeX 公式编辑
 - 🖼️ **图片管理** - 支持图片上传和管理
 - 📊 **阅读统计** - 显示字数、字符数和阅读时间
 - 🖨️ **打印优化** - 优化的打印样式和边距设置
@@ -39,4 +42,9 @@ npm run build
 
 详细的部署指南请查看：
 - [完整部署指南](./DEPLOYMENT_GUIDE.md) - 详细的部署步骤和平台选择
-- [部署检查清单](./DEPLOY_CHECKLIST.md) - 部署前的检查项
+
+## 贡献
+
+如果这个项目对您有帮助，欢迎给一个 ⭐ Star！
+
+如果有什么功能建议或发现了问题，欢迎提交 [Issue](https://github.com/Suchenl/MarkView-Pro/issues)。

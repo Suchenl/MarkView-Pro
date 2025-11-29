@@ -462,13 +462,6 @@ netlify deploy --prod --dir=dist
      ```
    - **这个域名完全免费，可以直接使用和分享！**
 
-8. **添加自定义域名（可选）**
-   - 在项目页面，点击 **"Custom domains"** 标签
-   - 点击 **"Set up a custom domain"** 或 **"Add a custom domain"**
-   - 输入你的域名（如：`example.com` 或 `www.example.com`）
-   - 按照提示配置 DNS 记录
-   - Cloudflare 会自动配置免费的 SSL 证书
-
 **如果找不到 Pages 入口：**
 - 确保你登录的是正确的 Cloudflare 账号
 - 尝试直接访问：`https://dash.cloudflare.com/pages`

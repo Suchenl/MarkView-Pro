@@ -1,0 +1,61 @@
+🎉 I've developed a powerful and completely free Markdown editor!
+
+✨ Key Features:
+
+⏰ Real-time Preview - Supports split-screen display of editor and preview
+🎨 Theme Switching - Supports light/dark themes
+📕 PDF Export - Supports exporting to PDF format
+📄 Markdown Export - Supports exporting to Markdown files
+📝 Formula Editing - Supports LaTeX formula editing
+🖼️ Image Insertion - Supports image upload and quick insertion
+📊 Reading Statistics - Displays word count, character count, and reading time
+🖨️ Print Optimization - Optimized print styles and margin settings
+
+🌐 Online Access: https://markview-pro.pages.dev/
+(Visit result shown in Figure 1)
+
+The application is now deployed on the website, and anyone can use it quickly and completely free!
+
+---
+
+💡 Why Recommend Markdown?
+
+I recommend everyone who struggles with manual formatting to use Markdown!
+
+Compared to traditional Word documents, Markdown's advantages:
+✅ Auto Formatting - No need to manually adjust formats, focus on content creation
+✅ Fast Formula Editing - Easily write mathematical formulas using LaTeX syntax
+✅ Plain Text Format - Easy version control and collaboration
+✅ Cross-platform Compatible - Can be opened and edited on any device
+✅ Quick to Learn - No need to learn complex programming knowledge, just a few minutes to master
+
+---
+
+🤖 Perfect for LLM (Large Language Model) Users!
+
+If you're an LLM user, I believe you're already tired of AI's messy response formats—if you directly copy their responses into Word documents, the formatting will be completely messed up, requiring hours of formatting, and this process needs to be repeated every time you copy.
+
+With this free Markdown editor, you no longer need to worry about this problem!
+
+💡 Usage Tips:
+• You can add instructions, such as "Please convert the response to markdown format" or "Please use markdown format for your response"
+• Make AI responses standardized in markdown format
+• Then directly paste into the editor, and the formatting will be perfectly preserved!
+
+As a Google AI Studio user, I often export markdown directly from responses and paste it into the editor. Existing editors either cost money or have poor functionality. After being driven crazy countless times, I decided to develop this application and make it available to everyone for free.
+(Copy operation shown in Figure 2, very simple and quick)
+
+---
+
+⭐ If This Application Helps You
+
+If you find this application helpful, I sincerely hope to receive your free ⭐ Star!
+
+📦 Project Homepage: https://github.com/Suchenl/MarkView-Pro
+
+---
+
+💬 Feedback & Suggestions
+
+If there are any features you'd like me to implement, you can submit an Issue on the project homepage or leave me a comment. I will continue to update in future versions. Thank you for your attention and feedback!
+

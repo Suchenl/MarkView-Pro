@@ -1,0 +1,13 @@
+🎉 I've built a powerful & completely free Markdown editor!
+
+✨ Key Features:
+⏰ Real-time preview
+🎨 Light/dark themes
+📕 PDF export
+📝 LaTeX math support
+🖼️ Image insertion
+📊 Reading stats
+
+🌐 Try it now: https://markview-pro.pages.dev/
+
+💬 Issues | ⭐ Star: https://github.com/Suchenl/MarkView-Pro
