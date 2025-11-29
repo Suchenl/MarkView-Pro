@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="MarkView Pro - A professional-grade Markdown editor with real-time preview, theme switching, PDF export, and syntax highlighting." />
+    <meta name="keywords" content="Markdown, Editor, Markdown Editor, MarkView Pro, Real-time Preview, PDF Export" />
+    <title>MarkView Pro</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" href="/favicon.ico">
+    <script>
+        window.tailwind = window.tailwind || {};
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        };
+    </script>
+    <script>
+        (function initTheme() {
+            const storageKey = 'markview-theme';
+            try {
+                const stored = localStorage.getItem(storageKey);
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
+                document.documentElement.dataset.theme = theme;
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+            } catch (error) {
+                document.documentElement.dataset.theme = 'light';
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"
+        integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        body.dark {
+            background: #020817;
+            color: #e2e8f0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Print Styles for PDF Export */
+        #app-print-container {
+            display: none;
+        }
+
+        body.print-active {
+            margin: 0;
+        }
+
+        body.print-active #app-print-container {
+            display: block;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 8mm;
+            }
+
+            body.print-active {
+                margin: 0;
+            }
+
+            /* Light theme printing (default) */
+            body.print-active:not(.dark) {
+                background: #fff;
+                color: #000;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* Dark theme printing - keep dark background and light text like in preview */
+            body.print-active.dark {
+                background: #020617;
+                color: #e5e7eb;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body.print-active #root {
+                display: none !important;
+            }
+
+            body.print-active #app-print-container {
+                display: block !important;
+                width: 178mm;
+                max-width: 100%;
+                margin: 0 auto;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body.print-active #app-print-container #app-preview-pane-print {
+                color: inherit;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                padding: 0 !important;
+            }
+
+            /* Match article text color & background with theme */
+            body.print-active.dark #app-print-container #app-preview-pane-print {
+                background: #020617 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body.print-active:not(.dark) #app-print-container #app-preview-pane-print {
+                background: #ffffff !important;
+            }
+
+            body.print-active.dark #app-print-container #app-preview-pane-print article {
+                color: #e5e7eb;
+            }
+
+            body.print-active:not(.dark) #app-print-container #app-preview-pane-print article {
+                color: #000;
+            }
+
+            body.print-active #app-print-container #app-preview-pane-print article {
+                max-width: 100% !important;
+                font-size: 11pt;
+                line-height: 1.6;
+                margin: 0 auto;
+                /* Visual margins inside printable area, controlled by CSS variables set from JS (in mm) */
+                padding: var(--print-margin-y, 0mm) var(--print-margin-x, 0mm);
+            }
+
+            /* Dark theme: unify borders so they don't stay white on dark background */
+            body.print-active.dark #app-print-container #app-preview-pane-print article,
+            body.print-active.dark #app-print-container #app-preview-pane-print article * {
+                border-color: #334155 !important;
+                /* slate-700 */
+            }
+
+            body.print-active #app-print-container #app-preview-pane-print article pre {
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+
+            body.print-active #app-print-container #app-preview-pane-print article blockquote,
+            body.print-active #app-print-container #app-preview-pane-print article table,
+            body.print-active #app-print-container #app-preview-pane-print article img,
+            body.print-active #app-print-container #app-preview-pane-print article pre {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Ensure tables fit page width when printing */
+            body.print-active #app-print-container #app-preview-pane-print table {
+                width: 100% !important;
+                table-layout: fixed;
+                border-collapse: collapse;
+            }
+
+            body.print-active #app-print-container #app-preview-pane-print th,
+            body.print-active #app-print-container #app-preview-pane-print td {
+                word-wrap: break-word;
+                white-space: normal;
+            }
+
+            /* Avoid horizontal scroll wrappers in print */
+            body.print-active #app-print-container #app-preview-pane-print div[class*="overflow-x-auto"] {
+                overflow: visible !important;
+            }
+
+            body.print-active #app-print-container .h-full {
+                height: auto !important;
+            }
+        }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "remark-gfm": "https://aistudiocdn.com/remark-gfm@^4.0.1",
+    "remark-math": "https://aistudiocdn.com/remark-math@^6.0.0",
+    "rehype-katex": "https://aistudiocdn.com/rehype-katex@^7.0.1",
+    "react-syntax-highlighter/": "https://aistudiocdn.com/react-syntax-highlighter@^16.1.0/",
+    "react-syntax-highlighter": "https://aistudiocdn.com/react-syntax-highlighter@^16.1.0"
+  }
+}
+</script>
+    <link rel="stylesheet" href="/index.css">
+</head>
+
+<body class="transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
