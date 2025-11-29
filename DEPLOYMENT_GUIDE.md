@@ -205,9 +205,51 @@ git push -u origin main
 
 ### 步骤 3: 选择部署平台
 
+#### 📊 平台选择建议
+
+**如果你需要支持中国用户访问，推荐顺序：**
+
+1. **🥇 Cloudflare Pages（最推荐 - 特别适合中国用户）**
+   - ✅ 中国访问：速度很快（在中国有节点，访问稳定）
+   - ✅ 免费且无限制：无流量限制、无构建次数限制
+   - ✅ 全球 CDN：覆盖全球，速度快
+   - ✅ 配置简单：支持自动部署
+   - ✅ 支持自定义域名：免费 SSL 证书
+   - ⚠️ 需要 Cloudflare 账号（免费注册）
+
+2. **🥈 Vercel**
+   - ✅ 最简单：零配置，自动检测 Vite
+   - ✅ 全球 CDN：支持多国家快速访问
+   - ⚠️ 免费额度限制：100GB 带宽/月，个人项目通常够用
+   - ⚠️ 中国访问：速度一般，某些地区可能需要科学上网访问管理界面
+   - ✅ 支持自定义域名：免费 SSL 证书
+
+3. **🥉 GitHub Pages（选项C）**
+   - ⚠️ 中国访问：可能较慢或不稳定
+   - ⚠️ 需要修改 `vite.config.ts` 配置
+   - ⚠️ 步骤相对复杂
+   - ✅ 完全免费
+   - ✅ 与 GitHub 深度集成
+   - ✅ 支持自定义域名：免费 SSL 证书
+
+**如果主要用户在中国，也可以考虑：**
+- **阿里云 OSS + CDN**：国内访问最快，需要备案
+- **腾讯云 COS + CDN**：国内访问快，需要备案
+
+---
+
 #### 选项 A: Vercel（推荐 - 最简单）
 
-**优点：** 自动检测 Vite 项目，零配置部署
+**优点：** 
+- 自动检测 Vite 项目，零配置部署
+- 全球 CDN，支持多国家快速访问
+- 每次 Git 推送自动部署
+- 免费额度：100GB 带宽/月（个人项目通常够用）
+- 支持自定义域名，免费 SSL 证书
+
+**⚠️ 注意：** 
+- 中国访问速度一般，某些地区可能需要科学上网访问管理界面
+- 如果主要用户在中国，建议优先考虑 Cloudflare Pages
 
 1. **访问 [vercel.com](https://vercel.com)** 并登录（支持 GitHub 账号）
 
@@ -225,7 +267,8 @@ git push -u origin main
 4. **部署**
    - 点击 "Deploy"
    - 等待构建完成（通常 1-2 分钟）
-   - 获得一个 `https://your-project.vercel.app` 的 URL
+   - 获得一个免费的域名：`https://your-project.vercel.app`
+   - **这个域名完全免费，可以直接使用！**
 
 5. **自动更新**
    - 每次推送到 Git 仓库，Vercel 会自动重新部署
@@ -252,7 +295,8 @@ vercel
 2. 进入 Dashboard，找到 "Sites" 区域
 3. 直接将 `dist` 文件夹拖拽到页面
 4. 等待上传和部署完成
-5. 获得一个 `https://random-name.netlify.app` 的 URL
+5. 获得一个免费的域名：`https://random-name.netlify.app`
+   - **这个域名完全免费，可以直接使用！**
 
 **方法 2: Git 集成**
 1. 访问 [netlify.com](https://netlify.com) 并登录
@@ -280,6 +324,8 @@ netlify deploy --prod --dir=dist
 #### 选项 C: GitHub Pages
 
 **优点：** 免费，与 GitHub 集成
+
+**⚠️ 注意：** 在中国访问可能较慢或不稳定，如果主要用户在中国，建议选择 Vercel 或 Cloudflare Pages
 
 1. **安装 gh-pages**
    ```bash
@@ -312,22 +358,168 @@ netlify deploy --prod --dir=dist
    - 进入 GitHub 仓库设置
    - 找到 "Pages" 选项
    - Source 选择 "gh-pages" 分支
-   - 保存后访问 `https://your-username.github.io/your-repo-name/`
+   - 保存后获得一个免费的域名：`https://your-username.github.io/your-repo-name/`
+   - **这个域名完全免费，可以直接使用！**
 
 ---
 
-#### 选项 D: Cloudflare Pages
+#### 选项 D: Cloudflare Pages（最推荐 - 特别适合中国用户）
 
-**优点：** 全球 CDN，速度快
+**📚 先了解：Workers vs Pages 的区别**
 
-1. 访问 [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. 进入 "Pages" → "Create a project"
-3. 连接 Git 仓库
-4. 配置：
-   - Framework preset: Vite
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-5. 点击 "Save and Deploy"
+| 特性 | **Cloudflare Pages** | **Cloudflare Workers** |
+|------|---------------------|----------------------|
+| **用途** | 部署静态网站（HTML/CSS/JS） | 运行服务器端代码（API、函数） |
+| **适合项目** | React、Vue、Vite、静态站点 | 后端 API、边缘计算、服务器逻辑 |
+| **构建** | 自动构建（npm run build） | 不需要构建，直接部署代码 |
+| **部署命令** | 不需要（自动） | `npx wrangler deploy` |
+| **输出** | 静态文件（dist 文件夹） | JavaScript 函数/代码 |
+| **配置界面** | Build command、Output directory | Deploy command、API token |
+| **你的项目** | ✅ **适合**（Vite + React 静态网站） | ❌ 不适合 |
+
+**简单理解：**
+- **Pages** = 部署网站（前端）
+- **Workers** = 运行代码（后端/API）
+
+**你的 MarkView Pro 项目应该使用 Pages，不是 Workers！**
+
+---
+
+**优点：** 
+- 🚀 中国访问：速度很快且稳定（在中国有节点）
+- 💰 免费且无限制：无流量限制、无构建次数限制
+- 🌍 全球 CDN：覆盖全球，速度快
+- ⚙️ 配置简单：支持自动部署
+- 🔒 支持自定义域名：免费 SSL 证书自动配置
+- 📦 支持环境变量和构建配置
+
+**详细步骤：**
+
+1. **访问 [Cloudflare Dashboard](https://dash.cloudflare.com)** 并登录
+
+2. **找到 Pages 入口**
+   
+   你当前看到的可能是 "Account home" 或 "Domains" 页面。要部署项目，需要进入 **Pages**：
+   
+   **方法 1：通过左侧导航栏**
+   - 在左侧导航栏找到 **"BUILD"** 部分（可能需要点击展开）
+   - 在 "BUILD" 下找到 **"Pages"** 并点击
+   - 或者直接点击左侧导航栏中的 **"Developer Platform"** 标签（在顶部标签栏）
+   
+   **方法 2：通过顶部标签栏**
+   - 在页面顶部，你会看到三个标签："Domains"、"Developer Platform"、"Zero Trust"
+   - 点击 **"Developer Platform"** 标签
+   - 然后点击 **"Pages"** 或 **"Create application"** → **"Pages"**
+
+3. **创建新项目**
+   - 进入 Pages 后，点击 **"Create a project"** 或 **"Create application"** 按钮
+   - **重要：** 确保选择的是 **"Pages"**，而不是 **"Workers"**！
+   - 选择 **"Connect to Git"** 或 **"Deploy with Git"**
+
+**⚠️ 重要：区分 Pages 和 Workers**
+
+如果你看到的配置界面包含：
+- ❌ **"Deploy command: npx wrangler deploy"** → 这是 **Workers**（用于服务器端代码）
+- ❌ **"API token"** 配置 → 这是 **Workers**
+
+**正确的 Pages 配置界面应该包含：**
+- ✅ **"Build command: npm run build"**
+- ✅ **"Build output directory: dist"**
+- ✅ **"Framework preset: Vite"**
+- ✅ **没有 "Deploy command" 或 "API token"**
+
+**如果你看到的是 Workers 配置界面：**
+1. 返回上一页
+2. 确保点击的是 **"Pages"**，不是 **"Workers"**
+3. 或者直接访问：`https://dash.cloudflare.com/pages`
+4. 然后点击 **"Create a project"** → **"Connect to Git"**
+
+4. **连接 Git 仓库**
+   - 选择你的 Git 提供商（GitHub、GitLab 或 Bitbucket）
+   - 授权 Cloudflare 访问你的仓库
+   - 选择你的项目仓库（如 `MarkView-Pro`）
+
+5. **配置构建设置**
+   - **Project name**: 输入项目名称（如：`markview-pro`）
+   - **Production branch**: 选择 `main` 或 `master`
+   - **Framework preset**: 选择 **"None"**（因为 Cloudflare 可能没有单独的 "Vite" 选项，只有 "VitePress"）
+   - **Build command**: 手动填写 `npm run build`
+   - **Build output directory**: 手动填写 `dist`（注意：不要写 `/dist` 或 `./dist`，只写 `dist`）
+   - **Root directory**: 留空（如果项目在仓库根目录）
+
+**⚠️ 注意：** 如果 Framework preset 下拉菜单中没有 "Vite" 选项，只有 "VitePress"：
+- **不要选择 "VitePress"**（那是用于文档站点的）
+- 选择 **"None"**，然后手动填写 Build command 和 Build output directory
+
+6. **部署**
+   - 点击 **"Save and Deploy"** 或 **"Deploy site"**
+   - 等待构建完成（通常 2-5 分钟）
+
+7. **获得免费域名**
+   - 部署完成后，你会看到一个类似这样的免费域名：
+     ```
+     https://markview-pro.pages.dev
+     ```
+   - **这个域名完全免费，可以直接使用和分享！**
+
+8. **添加自定义域名（可选）**
+   - 在项目页面，点击 **"Custom domains"** 标签
+   - 点击 **"Set up a custom domain"** 或 **"Add a custom domain"**
+   - 输入你的域名（如：`example.com` 或 `www.example.com`）
+   - 按照提示配置 DNS 记录
+   - Cloudflare 会自动配置免费的 SSL 证书
+
+**如果找不到 Pages 入口：**
+- 确保你登录的是正确的 Cloudflare 账号
+- 尝试直接访问：`https://dash.cloudflare.com/pages`
+- 或者点击左侧导航栏的 "Recents"（如果有最近使用的 Pages 项目）
+
+**⚠️ 常见构建错误及解决方案：**
+
+**错误：Build failed - Wrangler 相关错误**
+
+如果看到类似这样的错误：
+```
+The build failed due to an error...
+If are uploading a directory of assets...
+```
+
+**解决方案：**
+
+1. **检查构建配置**
+   - 进入 Cloudflare Pages 项目设置 → **"Settings"** → **"Builds & deployments"**
+   - 确认以下配置：
+     - **Build command**: `npm run build`
+     - **Build output directory**: `dist`（注意：不要有斜杠，直接写 `dist`）
+     - **Root directory**: 留空（如果项目在仓库根目录）
+     - **Node.js version**: 选择 `18` 或 `20`（推荐）
+
+2. **检查 Framework preset**
+   - 在项目设置中，确认 **"Framework preset"** 选择了 **"Vite"**
+   - 如果没有，可以手动设置或选择 **"None"** 然后手动配置
+
+3. **清理并重新部署**
+   - 在项目设置中，找到 **"Retry deployment"** 或删除失败的部署
+   - 重新触发部署
+
+4. **如果仍然失败，尝试手动配置**
+   - 在项目根目录创建 `wrangler.toml` 文件（如果 Cloudflare 要求）：
+     ```toml
+     name = "markview-pro"
+     compatibility_date = "2024-01-01"
+     
+     [site]
+     bucket = "./dist"
+     ```
+   - 或者，更简单的方法：确保 **Build output directory** 设置为 `dist`（不带斜杠）
+
+5. **检查本地构建**
+   - 在本地运行 `npm run build`，确保构建成功
+   - 检查 `dist` 文件夹是否包含 `index.html` 和所有资源文件
+
+6. **如果问题持续，尝试使用直接上传方式**
+   - 在 Cloudflare Pages 中，选择 **"Upload assets"** 而不是 **"Connect to Git"**
+   - 手动上传 `dist` 文件夹的内容
 
 ---
 
@@ -349,20 +541,190 @@ netlify deploy --prod --dir=dist
 
 ## 🔧 部署后配置
 
-### 自定义域名
+### 免费域名 vs 自定义域名
 
-大多数平台都支持自定义域名：
+#### 💰 不需要购买域名！
 
-1. **Vercel/Netlify**
-   - 进入项目设置
-   - 找到 "Domains" 选项
-   - 添加你的域名
-   - 按照提示配置 DNS
+**所有平台都提供免费的二级域名，完全不需要购买域名！**
 
-2. **GitHub Pages**
-   - 在仓库根目录创建 `CNAME` 文件
-   - 内容为你的域名（如：`example.com`）
-   - 配置 DNS 指向 GitHub Pages
+部署完成后，每个平台都会自动分配一个免费的域名：
+
+| 平台 | 免费域名格式 | 示例 |
+|------|------------|------|
+| **Vercel** | `your-project.vercel.app` | `markview-pro.vercel.app` |
+| **Cloudflare Pages** | `your-project.pages.dev` | `markview-pro.pages.dev` |
+| **Netlify** | `random-name.netlify.app` | `amazing-markview-123.netlify.app` |
+| **GitHub Pages** | `your-username.github.io/your-repo` | `username.github.io/markview-pro` |
+
+**这些免费域名：**
+- ✅ 完全免费，永久使用
+- ✅ 自动配置 HTTPS（SSL 证书）
+- ✅ 全球 CDN 加速
+- ✅ 可以直接使用，无需任何额外配置
+
+**自定义域名是可选的**，如果你：
+- 想要更专业的域名（如 `markview.com`）
+- 已有自己的域名
+- 想要品牌化
+
+那么可以配置自定义域名。但如果只是想部署网站，**使用免费域名就完全够用了！**
+
+---
+
+### 自定义域名（可选）
+
+**✅ 所有主流平台都支持自定义域名，并且都提供免费的 SSL 证书（HTTPS）！**
+
+**⚠️ 重要提示：**
+- **自定义域名是可选的**，不是必须的！
+- 如果你不想花钱，**直接使用平台提供的免费域名就完全够用了**！
+- 自定义域名需要你自己购买域名（通常每年 $10-15 左右）
+- 购买域名后，可以配置到任何平台上使用
+
+**如果你真的想要免费的自定义域名（不推荐）：**
+- 有一些免费的域名服务，但通常有限制或广告
+- 例如：Freenom（.tk, .ml, .ga 等免费域名），但可靠性较低
+- **建议：直接使用平台提供的免费二级域名，更稳定可靠**
+
+#### 1. Cloudflare Pages（推荐）
+
+**步骤：**
+1. 进入 Cloudflare Dashboard → Pages → 你的项目
+2. 点击 "Custom domains" → "Set up a custom domain"
+3. 输入你的域名（如：`example.com` 或 `www.example.com`）
+4. Cloudflare 会自动配置 DNS 和 SSL 证书
+5. 如果域名已在 Cloudflare 管理，配置会立即生效
+6. 如果域名在其他服务商，按照提示配置 DNS 记录
+
+**优点：**
+- 自动配置 DNS 和 SSL
+- 如果域名在 Cloudflare，配置最简单
+- 免费 SSL 证书自动续期
+
+---
+
+#### 2. Vercel
+
+**步骤：**
+1. 进入 Vercel Dashboard → 你的项目 → Settings
+2. 点击 "Domains" 标签
+3. 输入你的域名（如：`example.com`）
+4. 按照提示配置 DNS 记录：
+   - 添加 A 记录指向 Vercel 的 IP
+   - 或添加 CNAME 记录指向 Vercel 提供的域名
+5. Vercel 会自动配置 SSL 证书（通常几分钟内完成）
+
+**DNS 配置示例：**
+```
+类型: A
+名称: @
+值: 76.76.21.21
+
+类型: CNAME
+名称: www
+值: cname.vercel-dns.com
+```
+
+---
+
+#### 3. Netlify
+
+**步骤：**
+1. 进入 Netlify Dashboard → 你的站点 → Domain settings
+2. 点击 "Add custom domain"
+3. 输入你的域名
+4. 按照提示配置 DNS：
+   - 添加 A 记录或 CNAME 记录
+5. Netlify 会自动配置 SSL 证书
+
+**DNS 配置示例：**
+```
+类型: A
+名称: @
+值: 75.2.60.5
+
+类型: CNAME
+名称: www
+值: your-site.netlify.app
+```
+
+---
+
+#### 4. GitHub Pages
+
+**步骤：**
+1. 在仓库根目录创建 `CNAME` 文件（注意：文件名没有扩展名）
+2. 文件内容为你的域名，例如：
+   ```
+   example.com
+   ```
+   或
+   ```
+   www.example.com
+   ```
+3. 提交并推送到仓库：
+   ```bash
+   git add CNAME
+   git commit -m "Add custom domain"
+   git push
+   ```
+4. 进入 GitHub 仓库 → Settings → Pages
+5. 在 "Custom domain" 输入框中输入你的域名
+6. 配置 DNS 记录：
+   - 添加 A 记录指向 GitHub Pages 的 IP：
+     ```
+     185.199.108.153
+     185.199.109.153
+     185.199.110.153
+     185.199.111.153
+     ```
+   - 或添加 CNAME 记录指向 `your-username.github.io`
+
+**⚠️ 注意：** GitHub Pages 的 SSL 证书配置可能需要一些时间，通常几分钟到几小时。
+
+---
+
+#### 5. Cloudflare Pages（域名在其他服务商）
+
+如果你的域名不在 Cloudflare 管理：
+
+**步骤：**
+1. 在 Cloudflare Pages 中添加自定义域名
+2. 按照提示配置 DNS 记录：
+   - 添加 CNAME 记录：
+     ```
+     类型: CNAME
+     名称: @ 或 www
+     值: your-project.pages.dev
+     ```
+3. 等待 DNS 传播（通常几分钟到几小时）
+4. Cloudflare 会自动配置 SSL 证书
+
+---
+
+### 域名配置检查清单
+
+配置自定义域名后，确认：
+- [ ] DNS 记录已正确配置
+- [ ] 等待 DNS 传播完成（可用 `nslookup` 或在线工具检查）
+- [ ] SSL 证书已自动配置（通常几分钟内）
+- [ ] 网站可以通过自定义域名访问
+- [ ] HTTPS 正常工作（浏览器显示锁图标）
+- [ ] 如果配置了 www 和根域名，两者都能访问
+
+### 常见问题
+
+**Q: 需要购买 SSL 证书吗？**
+A: 不需要！所有平台都提供免费的 SSL 证书（Let's Encrypt），会自动配置和续期。
+
+**Q: 配置自定义域名需要多长时间？**
+A: DNS 传播通常需要几分钟到几小时，SSL 证书配置通常几分钟内完成。
+
+**Q: 可以同时使用多个域名吗？**
+A: 可以！大多数平台支持添加多个域名，都会自动配置 SSL。
+
+**Q: 根域名（example.com）和 www（www.example.com）都要配置吗？**
+A: 建议都配置，大多数平台支持自动重定向（如将 example.com 重定向到 www.example.com）。
 
 ### 环境变量
 
@@ -430,6 +792,48 @@ rm -rf node_modules package-lock.json
 npm install
 npm run build
 ```
+
+### 问题 3.1: Cloudflare Pages 构建失败 - Wrangler 错误
+
+**错误信息：**
+```
+Build failed... If are uploading a directory of assets...
+```
+
+**原因：** Cloudflare Pages 配置不正确，误用了 Wrangler（Workers 工具）
+
+**解决步骤：**
+
+1. **检查构建输出目录配置**
+   - 进入 Cloudflare Pages 项目 → Settings → Builds & deployments
+   - 确认 **Build output directory** 设置为 `dist`（不要有斜杠 `/dist` 或 `./dist`）
+   - 确认 **Build command** 为 `npm run build`
+
+2. **检查 Framework preset**
+   - 在项目设置中，确认选择了 **"Vite"** 或 **"None"**
+   - 如果选择了错误的 preset，改为 **"Vite"**
+
+3. **检查 Node.js 版本**
+   - 在构建设置中，选择 Node.js 版本为 **18** 或 **20**
+
+4. **重新部署**
+   - 删除失败的部署
+   - 重新触发部署（Retry deployment）
+
+5. **如果仍然失败，检查本地构建**
+   ```bash
+   # 确保本地构建成功
+   npm run build
+   
+   # 检查 dist 文件夹
+   ls dist/
+   # 应该看到 index.html 和 assets 文件夹
+   ```
+
+6. **最后手段：手动上传**
+   - 如果 Git 部署一直失败，可以尝试：
+   - 在 Cloudflare Pages 中选择 "Upload assets"
+   - 手动上传 `dist` 文件夹的内容
 
 ### 问题 4: 样式丢失
 
